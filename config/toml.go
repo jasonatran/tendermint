@@ -119,8 +119,18 @@ laddr = "{{ .RPC.ListenAddress }}"
 # NOTE: This server only supports /broadcast_tx_commit
 grpc_laddr = "{{ .RPC.GRPCListenAddress }}"
 
+# Maximum number of concurrent streams https://godoc.org/google.golang.org/grpc#MaxConcurrentStreams
+# 0 - unlimited.
+grpc_max_concurrent_streams = {{ .RPC.GRPCMaxConcurrentStreams }}
+
 # Activate unsafe RPC commands like /dial_seeds and /unsafe_flush_mempool
 unsafe = {{ .RPC.Unsafe }}
+
+# Maximum number of simultaneous connections (including WebSocket).
+# Does not include gRPC connections. See GRPCMaxConcurrentStreams
+# If you want to accept more significant number than the default, make sure
+# you increase your OS limits.
+max_open_connections = {{ .RPC.MaxOpenConnections }}
 
 ##### peer to peer configuration options #####
 [p2p]

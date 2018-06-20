@@ -17,7 +17,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/tendermint/go-amino"
+	amino "github.com/tendermint/go-amino"
 	cmn "github.com/tendermint/tmlibs/common"
 	"github.com/tendermint/tmlibs/log"
 
@@ -123,7 +123,7 @@ func setup() {
 	wm.SetLogger(tcpLogger)
 	mux.HandleFunc(websocketEndpoint, wm.WebsocketHandler)
 	go func() {
-		_, err := server.StartHTTPServer(tcpAddr, mux, tcpLogger)
+		_, err := server.StartHTTPServer(tcpAddr, mux, tcpLogger, server.Config{})
 		if err != nil {
 			panic(err)
 		}
@@ -136,7 +136,7 @@ func setup() {
 	wm.SetLogger(unixLogger)
 	mux2.HandleFunc(websocketEndpoint, wm.WebsocketHandler)
 	go func() {
-		_, err := server.StartHTTPServer(unixAddr, mux2, unixLogger)
+		_, err := server.StartHTTPServer(unixAddr, mux2, unixLogger, server.Config{})
 		if err != nil {
 			panic(err)
 		}

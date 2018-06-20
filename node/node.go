@@ -7,6 +7,8 @@ import (
 	"net"
 	"net/http"
 
+	"google.golang.org/grpc"
+
 	abci "github.com/tendermint/abci/types"
 	amino "github.com/tendermint/go-amino"
 	crypto "github.com/tendermint/go-crypto"
@@ -507,7 +509,12 @@ func (n *Node) startRPC() ([]net.Listener, error) {
 		wm.SetLogger(rpcLogger.With("protocol", "websocket"))
 		mux.HandleFunc("/websocket", wm.WebsocketHandler)
 		rpcserver.RegisterRPCFuncs(mux, rpccore.Routes, coreCodec, rpcLogger)
-		listener, err := rpcserver.StartHTTPServer(listenAddr, mux, rpcLogger)
+		listener, err := rpcserver.StartHTTPServer(
+			listenAddr,
+			mux,
+			rpcLogger,
+			rpcserver.Config{MaxOpenConnections: n.config.RPC.MaxOpenConnections},
+		)
 		if err != nil {
 			return nil, err
 		}
@@ -517,7 +524,11 @@ func (n *Node) startRPC() ([]net.Listener, error) {
 	// we expose a simplified api over grpc for convenience to app devs
 	grpcListenAddr := n.config.RPC.GRPCListenAddress
 	if grpcListenAddr != "" {
-		listener, err := grpccore.StartGRPCServer(grpcListenAddr)
+		opt := []grpc.ServerOption{}
+		if n.config.RPC.GRPCMaxConcurrentStreams > 0 {
+			opt = append(opt, grpc.MaxConcurrentStreams(n.config.RPC.GRPCMaxConcurrentStreams))
+		}
+		listener, err := grpccore.StartGRPCServer(grpcListenAddr, opt...)
 		if err != nil {
 			return nil, err
 		}

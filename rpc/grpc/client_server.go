@@ -12,7 +12,7 @@ import (
 )
 
 // Start the grpcServer in a go routine
-func StartGRPCServer(protoAddr string) (net.Listener, error) {
+func StartGRPCServer(protoAddr string, opt ...grpc.ServerOption) (net.Listener, error) {
 	parts := strings.SplitN(protoAddr, "://", 2)
 	if len(parts) != 2 {
 		return nil, fmt.Errorf("Invalid listen address for grpc server (did you forget a tcp:// prefix?) : %s", protoAddr)
@@ -23,7 +23,7 @@ func StartGRPCServer(protoAddr string) (net.Listener, error) {
 		return nil, err
 	}
 
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(opt...)
 	RegisterBroadcastAPIServer(grpcServer, &broadcastAPI{})
 	go grpcServer.Serve(ln) // nolint: errcheck
 

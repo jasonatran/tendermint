@@ -221,16 +221,30 @@ type RPCConfig struct {
 	// NOTE: This server only supports /broadcast_tx_commit
 	GRPCListenAddress string `mapstructure:"grpc_laddr"`
 
+	// Maximum number of concurrent streams https://godoc.org/google.golang.org/grpc#MaxConcurrentStreams
+	// 0 - unlimited.
+	GRPCMaxConcurrentStreams uint32 `mapstructure:"grpc_max_concurrent_streams"`
+
 	// Activate unsafe RPC commands like /dial_persistent_peers and /unsafe_flush_mempool
 	Unsafe bool `mapstructure:"unsafe"`
+
+	// Maximum number of simultaneous connections (including WebSocket).
+	// Does not include gRPC connections. See GRPCMaxConcurrentStreams
+	// If you want to accept more significant number than the default, make sure
+	// you increase your OS limits.
+	MaxOpenConnections int `mapstructure:"max_open_connections"`
 }
 
 // DefaultRPCConfig returns a default configuration for the RPC server
 func DefaultRPCConfig() *RPCConfig {
 	return &RPCConfig{
-		ListenAddress:     "tcp://0.0.0.0:26657",
-		GRPCListenAddress: "",
-		Unsafe:            false,
+		ListenAddress:            "tcp://0.0.0.0:26657",
+		GRPCListenAddress:        "",
+		GRPCMaxConcurrentStreams: 0,
+		Unsafe: false,
+		// should be < ({ulimit -Sn} - {MaxNumPeers} - {N of wal, db and other open files}) / 2
+		// divided by 2 because 1 fd for ipv4, 1 fd - ipv6
+		MaxOpenConnections: 475,
 	}
 }
 
