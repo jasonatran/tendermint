@@ -2,7 +2,7 @@ GOTOOLS = \
 	github.com/golang/dep/cmd/dep \
 	gopkg.in/alecthomas/gometalinter.v2
 PACKAGES=$(shell go list ./... | grep -v '/vendor/')
-BUILD_TAGS?=tendermint
+BUILD_TAGS?="tendermint gcc"
 BUILD_FLAGS = -ldflags "-X github.com/tendermint/tendermint/version.GitCommit=`git rev-parse --short=8 HEAD`"
 
 all: check build test install

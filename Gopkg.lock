@@ -20,10 +20,10 @@
   revision = "95f809107225be108efcf10a3509e4ea6ceef3c4"
 
 [[projects]]
+  branch = "master"
   name = "github.com/fortytw2/leaktest"
   packages = ["."]
-  revision = "a5ef70473c97b71626b9abeda80ee92ba2a7de9e"
-  version = "v1.2.0"
+  revision = "b008db64ef8daabb22ff6daa557f33b41d8f6ccd"
 
 [[projects]]
   name = "github.com/fsnotify/fsnotify"
@@ -114,7 +114,6 @@
   version = "v1.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/jmhodges/levigo"
   packages = ["."]
   revision = "c42d9e0ca023e2198120196f842701bb4c55d7b9"
@@ -167,8 +166,8 @@
     ".",
     "mem"
   ]
-  revision = "63644898a8da0bc22138abf860edaf5277b6102e"
-  version = "v1.1.0"
+  revision = "787d034dfe70e44075ccc060d346146ef53270ad"
+  version = "v1.1.1"
 
 [[projects]]
   name = "github.com/spf13/cast"
@@ -206,8 +205,8 @@
     "assert",
     "require"
   ]
-  revision = "12b6f73e6084dad08a7c6e575284b177ecafbc71"
-  version = "v1.2.1"
+  revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
+  version = "v1.2.2"
 
 [[projects]]
   branch = "master"
@@ -374,6 +373,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ae6792578b0664708339f4c05e020687d6b799ad6f8282394b919de69e403d1f"
+  inputs-digest = "33909b3c3e8e307345085002238f2ec30ec2638f4186879904d207b089063a01"
   solver-name = "gps-cdcl"
   solver-version = 1
